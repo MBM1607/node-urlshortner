@@ -48,7 +48,7 @@ app.post('/api/shorturl', (req, res, next) => {
 	try {
 		const parsed = new url.URL(req.body.url);
 
-		if (!parsed.protocol || !['http:', 'https:'].includes(parsed.protocol)) {
+		if (!parsed.protocol || !['http:', 'https:', 'ftp:'].includes(parsed.protocol)) {
 			throw Error('Invalid URL');
 		}
 
