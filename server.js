@@ -61,7 +61,7 @@ app.post('/api/shorturl', (req, res, next) => {
 			}
 		});
 	} catch (err) {
-		res.status(422).json({
+		res.json({
 			error: 'invalid url'
 		});
 	}
@@ -95,13 +95,17 @@ app.post('/api/shorturl', async (req, res) => {
 app.get(['/api/shorturl/:short_url', '/:short_url'], async (req, res) => {
 	try {
 		const url = await URL.findOne({ short_url: req.params.short_url });
-
-		res.redirect(url.original_url);
+		if (url) {
+			res.redirect(url.original_url)
+		}
+		else {
+			res.status(404).json({ error: 'No such short url exists.' } );
+		};
 	}
 	catch (e) {
-		res.status(500).json({
-			message: 'There was a problem'
-		})
+		res.json({
+			error: 'invalid url'
+		});
 	}
 });
 
